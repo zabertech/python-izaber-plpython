@@ -1,4 +1,5 @@
 import os
+import importlib
 
 import izaber
 from izaber import config, app_config, autoloader
@@ -14,13 +15,14 @@ CONFIG_BASE = """
 """
 
 def reload_base():
-    import importlib
     importlib.reload(izaber.plpython.base)
     from izaber.plpython.base import IPLPY
+    return IPLPY
 
 def init_plpy(plpy_globals,reload=False):
+    global IPLPY
     if reload or plpy_globals['GD'].get('always_reload'):
-        reload_base()
+        IPLPY = reload_base()
     return IPLPY(plpy_globals)
 
 
